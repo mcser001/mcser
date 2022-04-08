@@ -1,7 +1,5 @@
 name: ssh
-on:
-  watch:
-    types: started
+on: [push, workflow_dispatch]
 
     
 jobs:
