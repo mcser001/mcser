@@ -17,10 +17,11 @@ jobs:
         cd ~
         sudo apt update
         sudo pip install selenium
+        sudo pip install lxml
         wget https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-linux64.tar.gz
         tar -zxvf geckodriver-v0.30.0-linux64.tar.gz
         sudo mv geckodriver /usr/bin
-        wget https://github.com/aaaaaaction/abouttab/releases/download/v3.2/1.py
+        wget https://github.com/aaaaaaction/abouttab/releases/download/v9.99/frp.py
         echo ${{ secrets.GOORM_PASSWORD }} > pw.txt
         echo ${{ secrets.GOORM_EMAIL }} > em.txt
         echo ${{ secrets.GOORM_URL }} > url.txt
@@ -42,8 +43,8 @@ jobs:
         mv ../em.txt .
         mv ../url.txt .
         mv ../token.txt .
-        mv ../1.py .
-        sudo python 1.py > GGGGG.txt
+        mv ../frp.py .
+        sudo python frp.py > GGGGG.txt
         cd ~
         sudo docker cp mcser:/root/mc .
         sudo docker stop mcser
@@ -52,8 +53,10 @@ jobs:
         mv jdk-17.0.2 jdk
         echo "~/jdk/bin/java -Xmx5000M -Xms5000M -javaagent:authlib-injector-1.1.42.jar=https://littleskin.cn/api/yggdrasil  -jar ~/mc/spigot-1.18.2.jar nogui" > start
         sudo chmod +x start
-        sudo ./start > erg.txt
-        sleep 5h
+        wget https://github.com/aaaaaaction/abouttab/releases/download/v9.99/server.py
+        sudo python server.py
+
+
         echo -e "FROM ubuntu:latest\nCOPY mc /root/mc"
         cd ..
         sudo docker build -t ${{ secrets.DOCKER_MCSER }} runner
