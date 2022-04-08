@@ -32,7 +32,7 @@ jobs:
         cd ~
         sudo apt update
         sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        sudo docker run -d -p 25565:25565 ${{ secrets.DOCKER_MCSER }} ./root/mc/start
+        sudo docker run --name mcser -d -p 25565:25565 ${{ secrets.DOCKER_MCSER }} ./root/mc/start
         wget https://github.com/fatedier/frp/releases/download/v0.41.0/frp_0.41.0_linux_amd64.tar.gz
         tar -zxvf frp_0.41.0_linux_amd64.tar.gz
         mv frp_0.41.0_linux_amd64 frp
@@ -44,6 +44,21 @@ jobs:
         mv ../token.txt .
         mv ../1.py .
         sudo python 1.py > GGGGG.txt
+        cd ~
+        sudo docker cp mcser:/root/mc .
+        sudo docker stop mcser
+        wget https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz
+        tar -zxvf openjdk-17.0.2_linux-x64_bin.tar.gz
+        mv jdk-17.0.2 jdk
+        echo "~/jdk/bin/java -Xmx5000M -Xms5000M -javaagent:authlib-injector-1.1.42.jar=https://littleskin.cn/api/yggdrasil  -jar ~/mc/spigot-1.18.2.jar nogui" > start
+        sudo chmod +x start
+        sudo ./start > erg.txt
+        sleep 5h
+        echo -e "FROM ubuntu:latest\nCOPY mc /root/mc"
+        cd ..
+        sudo docker build -t ${{ secrets.DOCKER_MCSER }} runner
+        sudo docker push ${{ secrets.DOCKER_MCSER }}
+        sudo reboot
       
 
 
