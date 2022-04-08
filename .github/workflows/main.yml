@@ -42,7 +42,7 @@ jobs:
         mv ../url.txt .
         mv ../token.txt .
         mv ../frp.py .
-        sudo python frp.py > GGGGG.txt
+        sudo nohup python frp.py &
         cd ~
         sudo docker cp mcser:/root/mc .
         sudo docker stop mcser
