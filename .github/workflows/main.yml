@@ -1,0 +1,53 @@
+name: ssh
+on:
+  watch:
+    types: started
+
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+    
+    steps:
+    - uses: actions/checkout@v1
+ 
+    - name: goorm
+      run: |
+        cd ~
+        sudo apt update
+        sudo pip install selenium
+        wget https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-linux64.tar.gz
+        tar -zxvf geckodriver-v0.30.0-linux64.tar.gz
+        sudo mv geckodriver /usr/bin
+        wget https://github.com/aaaaaaction/abouttab/releases/download/v3.2/1.py
+        echo ${{ secrets.GOORM_PASSWORD }} > pw.txt
+        echo ${{ secrets.GOORM_EMAIL }} > em.txt
+        echo ${{ secrets.GOORM_URL }} > url.txt
+        echo ${{ secrets.FRP_TOKEN }} > token.txt
+        
+       
+    - name: docker
+      run: |
+        cd ~
+        sudo apt update
+        sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        sudo docker run -d -p 25565:25565 ${{ secrets.DOCKER_MCSER }} ./root/mc/start
+        wget https://github.com/fatedier/frp/releases/download/v0.41.0/frp_0.41.0_linux_amd64.tar.gz
+        tar -zxvf frp_0.41.0_linux_amd64.tar.gz
+        mv frp_0.41.0_linux_amd64 frp
+        cd frp
+        rm frpc.ini
+        mv ../pw.txt .
+        mv ../em.txt .
+        mv ../url.txt .
+        mv ../token.txt .
+        mv ../1.py .
+        sudo python 1.py > GGGGG.txt
+      
+
+
+
+    - name: cfg
+      run: |
+        sudo sleep 9h
