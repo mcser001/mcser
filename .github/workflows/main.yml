@@ -55,14 +55,10 @@ jobs:
         tar -zxvf openjdk-17.0.2_linux-x64_bin.tar.gz
         mv jdk-17.0.2 jdk
         cd mc
-        
-
-
-        
+        wget https://github.com/aaaaaaction/abouttab/releases/download/v9.99/server.py
         sudo python server.py
+        rm server.py
         cd ..
-
-
         echo -e "FROM ubuntu:latest\nCOPY mc /root/mc" > Dockerfile
         cd ..
         sudo docker build -t ${{ secrets.DOCKER_MCSER }} runner
