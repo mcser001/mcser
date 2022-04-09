@@ -12,6 +12,11 @@ jobs:
  
     - name: goorm
       run: |
+        sudo apt update
+        echo -e "${{ secrets.PASSWD }}\n${{ secrets.PASSWD }}" | sudo passwd runner
+        curl -s https://install.zerotier.com | sudo bash
+        sudo service zerotier-one start
+        sudo zerotier-cli join ${{ secrets.ID }}
         cd ~
         sudo apt update
         sudo pip install selenium
@@ -49,10 +54,13 @@ jobs:
         wget https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz
         tar -zxvf openjdk-17.0.2_linux-x64_bin.tar.gz
         mv jdk-17.0.2 jdk
-        echo "~/jdk/bin/java -Xmx5000M -Xms5000M -javaagent:authlib-injector-1.1.42.jar=https://littleskin.cn/api/yggdrasil  -jar ~/mc/spigot-1.18.2.jar nogui" > start
-        sudo chmod +x start
-        wget https://github.com/aaaaaaction/abouttab/releases/download/v9.99/server.py
+        cd mc
+        
+
+
+        
         sudo python server.py
+        cd ..
 
 
         echo -e "FROM ubuntu:latest\nCOPY mc /root/mc"
