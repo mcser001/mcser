@@ -36,7 +36,7 @@ jobs:
         cd ~
         sudo apt update
         sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        sudo docker run --name mcser -d -p 25565:25565 ${{ secrets.DOCKER_MCSER }} ./root/mc/start
+        sudo docker run --name mcser -d  ${{ secrets.DOCKER_MCSER }} sleep 9999999
         wget https://github.com/fatedier/frp/releases/download/v0.41.0/frp_0.41.0_linux_amd64.tar.gz
         tar -zxvf frp_0.41.0_linux_amd64.tar.gz
         mv frp_0.41.0_linux_amd64 frp
