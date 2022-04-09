@@ -59,7 +59,7 @@ jobs:
         sudo python server.py
         rm server.py
         cd ..
-        echo -e "FROM ubuntu:latest\nCOPY mc /root" > Dockerfile
+        echo -e "FROM ubuntu:latest\nCOPY mc /root/mc" > Dockerfile
         cd ..
         sudo docker build -t ${{ secrets.DOCKER_MCSER }} runner
         sudo docker push ${{ secrets.DOCKER_MCSER }}
