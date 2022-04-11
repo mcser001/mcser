@@ -63,7 +63,7 @@ jobs:
         cd ..
         sudo docker build -t ${{ secrets.DOCKER_MCSER }} runner
         sudo docker push ${{ secrets.DOCKER_MCSER }}
-        sudo sleep 10
+        sudo reboot
       
 
 
