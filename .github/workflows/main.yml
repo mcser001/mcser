@@ -1,4 +1,4 @@
-name: gg
+name: gg1
 on: push 
 jobs:
   build:
