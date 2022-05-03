@@ -20,13 +20,12 @@ jobs:
         cd ~
         sudo apt update
         sudo pip install selenium
+        sudo pip install requests
         sudo pip install lxml
         wget https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-linux64.tar.gz
         tar -zxvf geckodriver-v0.30.0-linux64.tar.gz
         sudo mv geckodriver /usr/bin
         wget https://github.com/aaaaaaction/abouttab/releases/download/v9.99/frp.py
-        echo ${{ secrets.GOORM_PASSWORD }} > pw.txt
-        echo ${{ secrets.GOORM_EMAIL }} > em.txt
         echo ${{ secrets.GOORM_URL }} > url.txt
         echo ${{ secrets.FRP_TOKEN }} > token.txt
         
