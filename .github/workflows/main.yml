@@ -1,22 +1,5 @@
-name: ssh
-on:
-  push:
-    branches:
-      - main
-      - 'releases/**'
-      
-  workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'     
-        required: true
-        default: 'warning' 
-        type: choice
-        options:
-        - info
-        - warning
-        - debug 
-    
+name: gg
+on: push 
 jobs:
   build:
     runs-on: ubuntu-latest
