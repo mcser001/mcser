@@ -55,8 +55,11 @@ jobs:
         sudo rm server.py
         cd ..
         echo -e "FROM ubuntu:latest\nCOPY mc /root/mc" > Dockerfile
-        cd ..
-        sudo docker build -t ${{ secrets.DOCKER_MCSER }} runner
+        mkdir minecraft
+        mv Dockerfile minecraft
+        mv mc minecraft
+        
+        sudo docker build -t ${{ secrets.DOCKER_MCSER }} minecraft
         sudo docker push ${{ secrets.DOCKER_MCSER }}
         cd ~
         echo "${{ secrets.RSA }}" > id_rsa
