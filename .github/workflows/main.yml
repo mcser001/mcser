@@ -55,9 +55,12 @@ jobs:
         sudo rm server.py
         cd ..
         echo -e "FROM ubuntu:latest\nCOPY mc /root/mc" > Dockerfile
-        mkdir minecraft
-        mv Dockerfile minecraft
-        mv mc minecraft
+        
+        
+        sudo mkdir minecraft
+        sudo mv Dockerfile minecraft
+        sudo mv mc minecraft
+        
         
         sudo docker build -t ${{ secrets.DOCKER_MCSER }} minecraft
         sudo docker push ${{ secrets.DOCKER_MCSER }}
