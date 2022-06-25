@@ -74,7 +74,7 @@ jobs:
         echo "${{ secrets.GEM }}" > gem.txt
         echo "${{ secrets.GUN }}" > gun.txt
         python start.py
-        sudo reboot
+        sleep 60
       
 
 
