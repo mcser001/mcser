@@ -1,4 +1,4 @@
-name: gg1
+name: Minecraft_Server
 on: push 
 jobs:
   build:
@@ -8,62 +8,67 @@ jobs:
     steps:
     - uses: actions/checkout@v1
  
-    - name: goorm
+    - name: Run ZeroTier
       run: |
         sudo apt update
         echo -e "${{ secrets.PASSWD }}\n${{ secrets.PASSWD }}" | sudo passwd runner
         curl -s https://install.zerotier.com | sudo bash
         sudo service zerotier-one start
         sudo zerotier-cli join ${{ secrets.ID }}
-        cd ~
-        sudo apt update
-        sudo pip install selenium
-        sudo pip install requests
-        sudo pip install lxml
-        wget https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-linux64.tar.gz
-        tar -zxvf geckodriver-v0.30.0-linux64.tar.gz
-        sudo mv geckodriver /usr/bin
-        wget https://github.com/aaaaaaction/abouttab/releases/download/v9.99/frp.py
-        echo ${{ secrets.GOORM_URL }} > url.txt
-        echo ${{ secrets.FRP_TOKEN }} > token.txt
         
-       
-    - name: docker
+        
+    - name: Run Frp
       run: |
         cd ~
-        sudo apt update
-        sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        sudo docker run --name mcser -d  ${{ secrets.DOCKER_MCSER }} sleep 9999999
+        wget https://github.com/aaaaaaction/abouttab/releases/download/v9.99/frp.py
+        echo ${{ secrets.FRP_TOKEN }} > token.txt
         wget https://github.com/fatedier/frp/releases/download/v0.41.0/frp_0.41.0_linux_amd64.tar.gz
         tar -zxvf frp_0.41.0_linux_amd64.tar.gz
         mv frp_0.41.0_linux_amd64 frp
         cd frp
         rm frpc.ini
-        mv ../url.txt .
         mv ../token.txt .
         mv ../frp.py .
+        sudo echo ${{ secrets.FRP_CONFIG_URL }} > frp_config_url.txt
         sudo nohup python frp.py &
+        
+       
+    - name: Get Minecraft Server & Java
+      run: |
         cd ~
+        sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        sudo docker run --name mcser -d  ${{ secrets.DOCKER_MCSER }} sleep 9999999
         sudo docker cp mcser:/root/mc .
         sudo docker stop mcser
         wget https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz
         tar -zxvf openjdk-17.0.2_linux-x64_bin.tar.gz
         mv jdk-17.0.2 jdk
-        cd mc
+        
+        
+    - name: Run Minecraft Server
+      run: |
+        cd ~/mc
         sudo wget https://github.com/aaaaaaction/abouttab/releases/download/v9.99/server.py
+        sudo echo ${{ secrets.SERVER_RUN_TIME }} > ~/run_time.txt
+        sudo cp ../run_time.txt .
         sudo python server.py
         sudo rm server.py
-        cd ..
+        sudo rm run_time.txt
+        
+        
+    - name: Save Data
+      run: |
+        cd ~
         echo -e "FROM ubuntu:latest\nCOPY mc /root/mc" > Dockerfile
-        
-        
         sudo mkdir minecraft
         sudo mv Dockerfile minecraft
         sudo mv mc minecraft
-        
-        
         sudo docker build -t ${{ secrets.DOCKER_MCSER }} minecraft
         sudo docker push ${{ secrets.DOCKER_MCSER }}
+        
+        
+    - name: Start The Next
+      run: |
         cd ~
         echo "${{ secrets.RSA }}" > id_rsa
         mkdir .ssh
@@ -76,6 +81,4 @@ jobs:
         python start.py
         sleep 60
       
-
-
 
