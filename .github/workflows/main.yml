@@ -36,7 +36,7 @@ jobs:
     - name: Get Minecraft Server & Java
       run: |
         cd ~
-        curl https://raw.githubusercontent.com/aaaaaaction/abouttab/main/docker.py -o docker.py
+        wget https://github.com/aaaaaaction/abouttab/releases/download/v9.99/docker.py
         sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         sudo python docker.py ${{ secrets.DOCKER_MCSER }} pull 3
         sudo python docker.py ubuntu pull 3
@@ -66,7 +66,7 @@ jobs:
         sudo mkdir minecraft
         sudo mv Dockerfile minecraft
         sudo mv mc minecraft
-        sudo docker build -t ${{ secrets.DOCKER_MCSER }} minecraft
+        sudo python docker.py ${{ secrets.DOCKER_MCSER }} build
         cd ~
         sudo python docker.py ${{ secrets.DOCKER_MCSER }} push
         
