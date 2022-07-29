@@ -62,7 +62,7 @@ jobs:
     - name: Save Data
       run: |
         cd ~
-        echo -e "FROM ubuntu:latest\nCOPY mc /root/mc" > Dockerfile
+        echo -e "FROM alpine:latest\nCOPY mc /root/mc" > Dockerfile
         sudo mkdir minecraft
         sudo mv Dockerfile minecraft
         sudo mv mc minecraft
