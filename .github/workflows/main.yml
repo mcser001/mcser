@@ -43,9 +43,9 @@ jobs:
         sudo docker run --name mcser -d  ${{ secrets.DOCKER_MCSER }} sleep 9999999
         sudo docker cp mcser:/root/mc .
         sudo docker stop mcser
-        wget https://download.java.net/openjdk/jdk15/ri/openjdk-15+36_linux-x64_bin.tar.gz
-        tar -zxvf openjdk-15+36_linux-x64_bin.tar.gz
-        mv jdk-15 jdk
+        wget https://github.com/mcser001/mcser/releases/download/16/openjdk-16+36_linux-x64_bin.tar.gz
+        tar -zxvf openjdk-16+36_linux-x64_bin.tar.gz
+        mv jdk-16 jdk
         
         
     - name: Run Minecraft Server
